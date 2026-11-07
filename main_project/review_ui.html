@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Iceberg Watch — association review</title>
+<style>body{font:16px system-ui;max-width:1000px;margin:30px auto;padding:20px;background:#eef3f6;color:#183047}img{max-width:100%;display:block}button,select,input,textarea{font:inherit;padding:10px;margin:6px}textarea{display:block;width:90%}.notice{background:#fff0cd;padding:15px}button:focus,input:focus,select:focus,textarea:focus{outline:3px solid #058}header{position:sticky;top:0;background:#eef3f6;padding:8px}</style>
+<h1>Review provisional associations</h1><p class="notice">These are unverified candidate identities. Shape and distance are diagnostics, not confidence scores. Decisions do not alter automatic tracking. Changes stay in this page until you download the CSV; closing or reloading loses unsaved changes.</p>
+<header><button id="prev">Previous</button><span id="progress" aria-live="polite"></span><button id="next">Next</button><button id="download">Download review CSV</button></header>
+<h2 id="title"></h2><p id="metrics"></p><img id="pair" alt="Two date candidate comparison">
+<details><summary>Show full-region location</summary><img id="context" alt="Candidate location in the full region"></details>
+<label>Decision <select id="decision"><option>unreviewed</option><option>accepted</option><option>rejected</option><option>uncertain</option></select></label>
+<label>Reviewer name / ID <input id="reviewer" autocomplete="off"></label><label for="notes">Evidence / notes</label><textarea id="notes" rows="4"></textarea><p id="message" role="status"></p>
+<script>
+const records=__RECORDS__;let index=0,dirty=false;
+const el=id=>document.getElementById(id);
+function save(){if(!records.length)return;for(const field of ['decision','reviewer','notes'])records[index][field]=el(field).value;}
+function render(){const r=records[index];if(!r){el('title').textContent='No associations';return;}
+el('title').textContent=`${r.from_date} region ${r.from_id} → ${r.to_date} region ${r.to_id}`;
+el('metrics').textContent=`Displacement ${r.distance_km.toFixed(3)} km; shape diagnostic ${r.shape_match_i1.toFixed(3)}. ${r.small_displacement_review?'Small displacement: geolocation caution.':''}`;
+el('pair').src=r.review_image;el('context').src='context_'+String(r.link_number).padStart(3,'0')+'.png';for(const field of ['decision','reviewer','notes'])el(field).value=r[field]||'';
+el('progress').textContent=`${index+1} / ${records.length}`;el('prev').disabled=index===0;el('next').disabled=index===records.length-1;}
+for(const field of ['decision','reviewer','notes'])el(field).addEventListener('input',()=>{dirty=true;});
+el('prev').onclick=()=>{save();index--;render();};el('next').onclick=()=>{save();index++;render();};
+const csvCell=value=>'"'+String(value??'').replaceAll('"','""')+'"';
+el('download').onclick=()=>{save();const invalid=records.findIndex(r=>r.decision!=='unreviewed'&&!r.reviewer.trim());if(invalid>=0){index=invalid;render();el('message').textContent='Enter the reviewer name before exporting a decision.';return;}
+const keys=['from_date','from_id','to_date','to_id','decision','reviewer','notes'];const csv=[keys.join(','),...records.map(r=>keys.map(k=>csvCell(r[k])).join(','))].join('\r\n')+'\r\n';const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='human_review.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);dirty=false;el('message').textContent='CSV download requested. Validate the downloaded file with review_associations.py --csv PATH.';};
+window.addEventListener('beforeunload',event=>{if(dirty){event.preventDefault();event.returnValue='';}});render();
+</script></html>
