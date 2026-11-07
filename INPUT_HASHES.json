@@ -1,0 +1,8 @@
+{
+  "main_project/outputs/common_grid/sar_20250716.tif": "2d20bc02674f5f7bc3bbe5860c689ac23ea4c7438801f6fc8534893979d8f43b",
+  "main_project/outputs/common_grid/sar_20250722.tif": "058b89f90c859b53bd3246adb2209b32cbb9772e7947a974f7d418b98398ca08",
+  "main_project/outputs/common_grid/sar_20250728.tif": "d236b70688b77afdffb6501d708db593e5b40bbe8f2165cc5eb2297aadd29d95",
+  "main_project/outputs/common_grid/sar_20250821.tif": "79db186d8a663fd181098d4b71f093d0e85f0cf5ffe42d5d6229fad55b37a6d3",
+  "data/reference/paper/figure5_reference_large.png": "8ecffc0d4ffa243d50a6f212d3b0d2e9f51bd9f7c928dc1826890bb6668d6d85",
+  "data/reference/add/coulman_surfaces.json": "98cc0f0dca2cf5821579c2d25764d4f0f84020a136c2dbb123f8845360f9e939"
+}

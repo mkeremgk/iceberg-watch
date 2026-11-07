@@ -1,0 +1,6 @@
+# Match the local analysis versions; use OpenCV without GUI dependencies on EC2.
+numpy==2.5.3
+matplotlib==3.11.2
+rasterio==1.5.1
+opencv-python-headless==5.0.0.93
+certifi==2026.7.22

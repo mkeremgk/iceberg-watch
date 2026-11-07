@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "checked_date": "2026-10-23",
+  "unit_tests_passed": 56,
+  "result_comparisons": {
+    "fixed_boundary_scenario.json": true,
+    "fixed_boundary_summary.json": true,
+    "fixed_boundary_validation.json": true,
+    "association_review/review_summary.json": true,
+    "route_geometry_audit.json": true,
+    "scenario_explorer/manifest.json": true,
+    "candidate_impact/results.json": true
+  },
+  "limitations": "Prepared maps to report; raw TPS not rerun. Seven semantic output comparisons use numeric tolerance 1e-9. Association byte hash and some raster byte hashes differ; byte-identical inputs are not claimed. Software evidence does not validate environmental assumptions.",
+  "stage_count": 26,
+  "scope": "Recorded prepared-map AWS run; not a fresh run of this archive."
+}

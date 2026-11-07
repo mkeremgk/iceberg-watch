@@ -1,0 +1,133 @@
+{
+  "scope": "Recorded fixed-August-boundary counterfactual; not observed penguin paths.",
+  "results": [
+    {
+      "date": "20250716",
+      "spacing_m": 80,
+      "policy": "offshore_only",
+      "status": "model_path_found",
+      "distance_m": 13832.935059634514,
+      "extra_vs_baseline_m": 33.13708498984852
+    },
+    {
+      "date": "20250722",
+      "spacing_m": 80,
+      "policy": "offshore_only",
+      "status": "model_path_found",
+      "distance_m": 13936.652224137048,
+      "extra_vs_baseline_m": 136.85424949238222
+    },
+    {
+      "date": "20250728",
+      "spacing_m": 80,
+      "policy": "offshore_only",
+      "status": "model_path_found",
+      "distance_m": 13866.072144624362,
+      "extra_vs_baseline_m": 66.27416997969704
+    },
+    {
+      "date": "20250821",
+      "spacing_m": 80,
+      "policy": "offshore_only",
+      "status": "model_path_found",
+      "distance_m": 13866.072144624362,
+      "extra_vs_baseline_m": 66.27416997969704
+    },
+    {
+      "date": "20250716",
+      "spacing_m": 80,
+      "policy": "all_retained",
+      "status": "model_path_found",
+      "distance_m": 13992.935059634514,
+      "extra_vs_baseline_m": 193.13708498984852
+    },
+    {
+      "date": "20250722",
+      "spacing_m": 80,
+      "policy": "all_retained",
+      "status": "model_path_found",
+      "distance_m": 14077.240969167504,
+      "extra_vs_baseline_m": 277.4429945228385
+    },
+    {
+      "date": "20250728",
+      "spacing_m": 80,
+      "policy": "all_retained",
+      "status": "model_path_found",
+      "distance_m": 14139.20922961421,
+      "extra_vs_baseline_m": 339.41125496954373
+    },
+    {
+      "date": "20250821",
+      "spacing_m": 80,
+      "policy": "all_retained",
+      "status": "model_path_found",
+      "distance_m": 14139.20922961421,
+      "extra_vs_baseline_m": 339.41125496954373
+    },
+    {
+      "date": "20250716",
+      "spacing_m": 200,
+      "policy": "offshore_only",
+      "status": "model_path_found",
+      "distance_m": 14042.640687119285,
+      "extra_vs_baseline_m": 0.0
+    },
+    {
+      "date": "20250722",
+      "spacing_m": 200,
+      "policy": "offshore_only",
+      "status": "model_path_found",
+      "distance_m": 14091.168824543143,
+      "extra_vs_baseline_m": 48.528137423858425
+    },
+    {
+      "date": "20250728",
+      "spacing_m": 200,
+      "policy": "offshore_only",
+      "status": "model_path_found",
+      "distance_m": 14222.539674441618,
+      "extra_vs_baseline_m": 179.8989873223327
+    },
+    {
+      "date": "20250821",
+      "spacing_m": 200,
+      "policy": "offshore_only",
+      "status": "model_path_found",
+      "distance_m": 14222.539674441618,
+      "extra_vs_baseline_m": 179.8989873223327
+    },
+    {
+      "date": "20250716",
+      "spacing_m": 200,
+      "policy": "all_retained",
+      "status": "model_path_found",
+      "distance_m": 14276.955262170048,
+      "extra_vs_baseline_m": 234.31457505076287
+    },
+    {
+      "date": "20250722",
+      "spacing_m": 200,
+      "policy": "all_retained",
+      "status": "model_path_found",
+      "distance_m": 14325.483399593904,
+      "extra_vs_baseline_m": 282.8427124746195
+    },
+    {
+      "date": "20250728",
+      "spacing_m": 200,
+      "policy": "all_retained",
+      "status": "model_path_found",
+      "distance_m": 14456.85424949238,
+      "extra_vs_baseline_m": 414.21356237309556
+    },
+    {
+      "date": "20250821",
+      "spacing_m": 200,
+      "policy": "all_retained",
+      "status": "model_path_found",
+      "distance_m": 14456.85424949238,
+      "extra_vs_baseline_m": 414.21356237309556
+    }
+  ]
+}
