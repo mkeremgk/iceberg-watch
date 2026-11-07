@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {shortestPath,preset} from './routing.mjs';
+const w=24,h=16,start=8*w+2,target=8*w+21;
+assert.equal(shortestPath(w,h,preset('clear',w,h),start,target).distance,19);
+assert(shortestPath(w,h,preset('detour',w,h),start,target).distance>19);
+assert.equal(shortestPath(w,h,preset('closed',w,h),start,target),null);
+assert.equal(shortestPath(2,2,new Set([1,2]),0,3),null);
+assert.equal(shortestPath(2,2,new Set([0]),0,3),null);
+assert.equal(shortestPath(2,2,new Set(),0,0).distance,0);
+const wall=preset('closed',w,h);wall.delete(8*w+12);
+assert.equal(shortestPath(w,h,wall,start,target).distance,19);
+console.log('Seven synthetic routing contracts passed.');
