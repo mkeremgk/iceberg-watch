@@ -1,0 +1,34 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Blind detection review</title>
+<style>body{font:16px system-ui;max-width:1050px;margin:25px auto;padding:15px;background:#edf2f5}canvas{width:min(90vw,750px);height:auto;image-rendering:pixelated;cursor:crosshair;background:#222}button,input,select{font:inherit;margin:6px;padding:7px}.note{background:#fff2cd;padding:12px}textarea{width:90%;height:60px}</style>
+<h1>Candidate-independent visual review</h1><p class="note">No automatic masks are shown. Mark each visually distinct iceberg candidate once near its centre. Use “uncertain” when SAR appearance is ambiguous; do not guess. Mark objects whose centre is inside the tile, including objects cut at its edge. Do not mark continuous sea ice or land as an iceberg. This is a pilot visual review, not physical ground truth.</p>
+<p>Wide view spans up to 30 × 30 km. Mark only inside the yellow 10 × 10 km review box. Purple areas have no data. One source pixel is 40 m. Point annotations cannot verify the detector's 0.1 km² minimum area. Small or unresolved objects may remain uncertain.</p>
+<label>Reviewer <input id="reviewer"></label><label>Mark class <select id="kind"><option value="iceberg_candidate">Iceberg candidate</option><option value="uncertain">Uncertain</option></select></label>
+<p><label>View <select id="view"><option value="wide">Wide context (30 km)</option><option value="detail">Review area detail (10 km)</option></select></label></p><p id="title"></p><canvas id="canvas" width="250" height="250"></canvas>
+<p><button id="undo">Undo last mark</button><label><input type="checkbox" id="done">Reviewed this tile (also check when no objects are visible)</label></p>
+<textarea id="notes" placeholder="Notes: ambiguous ice, truncated objects, poor contrast..."></textarea>
+<p><button id="prev">Previous</button><button id="next">Next</button><button id="save">Download annotations</button><label>Resume JSON <input id="load" type="file" accept=".json"></label></p><p id="status"></p>
+<script>
+const pack=PACK_DATA;let i=0,dirty=false;let records=pack.tiles.map(t=>({id:t.id,reviewed:false,points:[],notes:''}));
+const $=id=>document.getElementById(id),canvas=$('canvas'),ctx=canvas.getContext('2d');let img=new Image();
+let offsetX=0,offsetY=0,loaded=false;
+function render(){const t=pack.tiles[i],wide=$('view').value==='wide';loaded=false;
+canvas.width=wide?t.context_width:t.size;canvas.height=wide?t.context_height:t.size;
+offsetX=wide?t.context_x:0;offsetY=wide?t.context_y:0;
+$('title').textContent=`${i+1}/${pack.tiles.length} — ${t.date} — ${t.stratum} — ${records[i].points.length} marks`;
+$('done').checked=records[i].reviewed;$('notes').value=records[i].notes;
+const current=i,mode=$('view').value,picture=new Image();img=picture;
+picture.onload=()=>{if(current===i&&mode===$('view').value&&img===picture){loaded=true;draw();}};
+picture.src=wide?t.context_image:t.image;}
+function draw(){if(!loaded)return;ctx.drawImage(img,0,0,canvas.width,canvas.height);
+ctx.strokeStyle='#ffeb3b';ctx.lineWidth=2;ctx.strokeRect(offsetX+.5,offsetY+.5,pack.tiles[i].size-1,pack.tiles[i].size-1);
+for(const p of records[i].points){ctx.strokeStyle=p.class==='uncertain'?'#ffbf00':'#00ffff';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(p.x+offsetX,p.y+offsetY,3,0,Math.PI*2);ctx.stroke();}}
+canvas.onclick=e=>{if(!loaded)return;const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)*canvas.width/r.width-offsetX,y=(e.clientY-r.top)*canvas.height/r.height-offsetY;
+if(x<0||y<0||x>=pack.tiles[i].size||y>=pack.tiles[i].size){$('status').textContent='Mark only inside the yellow review box; the surrounding area is context.';return;}
+records[i].points.push({x,y,class:$('kind').value});dirty=true;draw();};
+$('view').onchange=render;
+$('undo').onclick=()=>{records[i].points.pop();dirty=true;draw();};$('done').onchange=()=>{records[i].reviewed=$('done').checked;dirty=true;};$('notes').oninput=()=>{records[i].notes=$('notes').value;dirty=true;};$('reviewer').oninput=()=>dirty=true;
+$('prev').onclick=()=>{i=Math.max(0,i-1);render();};$('next').onclick=()=>{i=Math.min(records.length-1,i+1);render();};
+$('save').onclick=()=>{const data={pack_id:pack.pack_id,reviewer:$('reviewer').value.trim(),tiles:records};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='detection_annotations_'+pack.pack_id+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);dirty=false;$('status').textContent=`Saved ${records.filter(r=>r.reviewed).length}/${records.length} reviewed tiles. Partial saves can be resumed.`;};
+$('load').onchange=async e=>{try{if(dirty&&!confirm('Replace unsaved edits?'))return;const d=JSON.parse(await e.target.files[0].text());if(d.pack_id!==pack.pack_id||d.tiles.length!==records.length||d.tiles.some((r,n)=>r.id!==pack.tiles[n].id||!Array.isArray(r.points)||r.points.some(p=>!['iceberg_candidate','uncertain'].includes(p.class)||!Number.isFinite(p.x)||!Number.isFinite(p.y)||p.x<0||p.x>=250||p.y<0||p.y>=250)))throw Error('Invalid or mismatched annotations');records=d.tiles;$('reviewer').value=d.reviewer||'';dirty=false;render();}catch(err){$('status').textContent=err.message;}};
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});render();
+</script></html>
